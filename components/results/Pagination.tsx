@@ -29,7 +29,7 @@ export default function Pagination({ currentPage, query }: PaginationProps) {
           currentPage === 1 ? 'pointer-events-none opacity-50' : ''
         }`}
       >
-        ←
+Previous ←
       </Link>
       {Array.from({ length: TOTAL_PAGES }, (_, index) => {
         const page = index + 1
@@ -55,7 +55,7 @@ export default function Pagination({ currentPage, query }: PaginationProps) {
           currentPage === TOTAL_PAGES ? 'pointer-events-none opacity-50' : ''
         }`}
       >
-        →
+Next →
       </Link>
     </nav>
   )
