@@ -38,29 +38,36 @@ export default async function SearchPage({
   const data = query ? await fetchResults(query) : { query, results: [] }
 
   return (
-    <main className="px-6 py-16">
+    <main className="px-27 py-36">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-10">
-          <p className="text-sm uppercase tracking-[0.4em] text-white/50">EMAZ Search</p>
-          <h1 className="text-3xl sm:text-4xl mt-4">Results for “{data.query || '—'}”</h1>
+        <div className="mb-27">
+          <p className="text-18 uppercase tracking-[0.3em] text-emaz-gold/60">
+            EMAZ Search
+          </p>
+          <h1 className="mt-18 text-36">Results for “{data.query || '—'}”</h1>
         </div>
 
         {data.results.length === 0 ? (
-          <p className="text-white/60">No results found. Try another search.</p>
+          <p className="text-18 text-emaz-gold/60">No results found. Try another search.</p>
         ) : (
-          <ul className="space-y-8">
+          <ul className="space-y-18">
             {data.results.map((result) => (
-              <li key={result.link} className="lux-card lux-border p-6">
+              <li
+                key={result.link}
+                className="rounded-9 border border-emaz-secondary bg-emaz-secondary/70 p-27"
+              >
                 <a
                   href={result.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl text-lux-gold hover:underline"
+                  className="text-27 text-emaz-gold hover:underline"
                 >
                   {result.title}
                 </a>
-                <p className="text-sm text-white/40 mt-2">{result.link}</p>
-                <p className="text-white/70 mt-4 leading-relaxed">{result.snippet}</p>
+                <p className="mt-9 text-18 text-emaz-gold/50">{result.link}</p>
+                <p className="mt-18 text-18 text-emaz-gold/70 leading-relaxed">
+                  {result.snippet}
+                </p>
               </li>
             ))}
           </ul>
