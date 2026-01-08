@@ -2,8 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-emaz-blue text-white;
-  margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+@layer base {
+  body {
+    @apply bg-emaz-blue text-white;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+      sans-serif;
+    background: linear-gradient(135deg, #000b1e 0%, #001133 100%);
+  }
+}
+
+@layer utilities {
+  .gradient-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+  }
+
+  .gradient-blue {
+    background: linear-gradient(135deg, #000b1e 0%, #0a1929 100%);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-emaz-blue;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-emaz-gold/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-emaz-gold/50;
+}
+
+::selection {
+  @apply bg-emaz-gold/30 text-white;
 }
