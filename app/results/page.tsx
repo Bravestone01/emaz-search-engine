@@ -23,8 +23,8 @@ const RESULTS_PER_PAGE = 9
 const TOTAL_PAGES = 3
 const TOTAL_RESULTS = RESULTS_PER_PAGE * TOTAL_PAGES
 
-function buildAbsoluteUrl(path: string) {
-  const headersList = headers()
+async function buildAbsoluteUrl(path: string) {
+  const headersList = await headers()
   const host = headersList.get('host') ?? 'localhost:3000'
   const protocol = headersList.get('x-forwarded-proto') ?? 'http'
   return `${protocol}://${host}${path}`
@@ -56,7 +56,7 @@ export default async function ResultsPage({
     : Math.min(Math.max(requestedPage, 1), TOTAL_PAGES)
 
   const response = await fetch(
-    buildAbsoluteUrl(`/api/swarm?q=${encodeURIComponent(query)}`),
+    await buildAbsoluteUrl(`/api/swarm?q=${encodeURIComponent(query)}`),
     {
       cache: 'no-store',
     },
