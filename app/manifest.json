@@ -1,0 +1,9 @@
+{
+  "name": "EMAZ Search",
+  "short_name": "EMAZ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000B1E",
+  "theme_color": "#000B1E",
+  "description": "EMAZ Search built on a 369 design system."
+}
