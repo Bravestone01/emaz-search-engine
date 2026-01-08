@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 
 import SearchBar from '@/components/core/SearchBar'
+import Disclosure from '@/components/affiliate/Disclosure'
 import Pagination from '@/components/results/Pagination'
 import ResultCard from '@/components/results/ResultCard'
 
@@ -112,6 +113,7 @@ export default async function ResultsPage({
         </section>
 
         <Pagination currentPage={currentPage} query={query} />
+        <Disclosure />
       </div>
     </main>
   )
