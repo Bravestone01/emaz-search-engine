@@ -10,7 +10,8 @@
   "dependencies": {
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
     "@types/node": "^20",

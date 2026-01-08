@@ -3,21 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --space-blue: #000B1E;
-  --royal-gold: #D4AF37;
+  color-scheme: dark;
 }
 
 body {
-  background: linear-gradient(135deg, #000B1E 0%, #0A1929 100%);
-  color: white;
+  @apply bg-black text-white;
   min-height: 100vh;
   margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Glass effect */
-.glass-effect {
-  background: rgba(10, 25, 41, 0.7);
-  backdrop-filter: blur(27px);
-  -webkit-backdrop-filter: blur(27px);
-  border: 1px solid rgba(212, 175, 55, 0.2);
+main {
+  @apply min-h-screen;
+}
+
+.lux-border {
+  @apply border border-white/10;
+}
+
+.lux-card {
+  @apply rounded-2xl bg-white/5 backdrop-blur-md;
 }
