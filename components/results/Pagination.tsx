@@ -21,11 +21,11 @@ export default function Pagination({ currentPage, query }: PaginationProps) {
   const nextPage = Math.min(TOTAL_PAGES, currentPage + 1)
 
   return (
-    <nav className="flex flex-wrap items-center justify-center gap-27 text-body text-primary-text">
+    <nav className="flex flex-wrap items-center justify-center gap-18 text-small text-primary-text">
       <Link
         href={buildHref(query, previousPage)}
         aria-disabled={currentPage === 1}
-        className={`rounded-full border border-primary-text px-27 py-9 transition-colors hover:bg-primary-secondary ${
+        className={`rounded-full border border-primary-text px-18 py-9 transition-colors hover:bg-primary-secondary ${
           currentPage === 1 ? 'pointer-events-none opacity-50' : ''
         }`}
       >
@@ -38,7 +38,7 @@ export default function Pagination({ currentPage, query }: PaginationProps) {
           <Link
             key={page}
             href={buildHref(query, page)}
-            className={`rounded-full border px-27 py-9 transition-colors ${
+            className={`rounded-full border px-18 py-9 transition-colors ${
               isActive
                 ? 'border-primary-text bg-primary-text text-primary-bg'
                 : 'border-primary-text hover:bg-primary-secondary'
@@ -51,7 +51,7 @@ export default function Pagination({ currentPage, query }: PaginationProps) {
       <Link
         href={buildHref(query, nextPage)}
         aria-disabled={currentPage === TOTAL_PAGES}
-        className={`rounded-full border border-primary-text px-27 py-9 transition-colors hover:bg-primary-secondary ${
+        className={`rounded-full border border-primary-text px-18 py-9 transition-colors hover:bg-primary-secondary ${
           currentPage === TOTAL_PAGES ? 'pointer-events-none opacity-50' : ''
         }`}
       >
