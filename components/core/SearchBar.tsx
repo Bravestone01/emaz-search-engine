@@ -5,10 +5,18 @@ import { useState, type FormEvent } from "react"
 
 import VoiceButton from "./VoiceButton"
 
-export default function SearchBar() {
+type SearchBarProps = {
+  initialQuery?: string
+  size?: "default" | "compact"
+  className?: string
+}
+
+export default function SearchBar({ initialQuery = "", size = "default", className }: SearchBarProps) {
   const router = useRouter()
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState(initialQuery)
   const [isLoading, setIsLoading] = useState(false)
+  const isCompact = size === "compact"
+  const wrapperClassName = isCompact ? "relative w-full max-w-2xl flex-1" : "relative w-full max-w-[90%] flex-1"
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -29,15 +37,19 @@ export default function SearchBar() {
 
   return (
     <form
-      className="flex w-full items-center justify-center gap-4"
+      className={`flex w-full items-center justify-center gap-4 ${className ?? ""}`}
       onSubmit={handleSubmit}
     >
       <VoiceButton />
-      <div className="relative w-full max-w-[90%] flex-1">
+      <div className={wrapperClassName}>
         <input
           type="text"
           placeholder="Search with halal intentions..."
-          className="h-[54px] w-full rounded-[9px] border-2 border-[#D4AF37] bg-[#0A1929] pl-4 pr-12 text-white placeholder:text-white/60 focus:outline-none disabled:opacity-70"
+          className={
+            isCompact
+              ? "h-11 w-full rounded-full border border-[#D4AF37]/70 bg-[#0A1929] pl-4 pr-12 text-sm text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 disabled:opacity-70"
+              : "h-[54px] w-full rounded-[9px] border-2 border-[#D4AF37] bg-[#0A1929] pl-4 pr-12 text-white placeholder:text-white/60 focus:outline-none disabled:opacity-70"
+          }
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           disabled={isLoading}

@@ -1,5 +1,6 @@
 import { headers } from 'next/headers'
 
+import SearchBar from '@/components/core/SearchBar'
 import Pagination from '@/components/results/Pagination'
 import ResultCard from '@/components/results/ResultCard'
 
@@ -79,17 +80,26 @@ export default async function ResultsPage({
   const pagedResults = results.slice(startIndex, startIndex + RESULTS_PER_PAGE)
 
   return (
-    <main className="min-h-screen bg-primary-bg px-6 py-12 text-primary-text sm:px-10 lg:px-16">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-12">
-        <div className="space-y-3 text-left">
-          <p className="text-small text-primary-text/70">Total results: {TOTAL_RESULTS}</p>
-          <h1 className="text-h2">Halal search results</h1>
-          <p className="text-body text-primary-text/70">
-            {query ? `Showing results for “${query}”.` : 'Showing the latest swarm discoveries.'}
-          </p>
+    <main className="min-h-screen bg-primary-bg text-primary-text">
+      <div className="border-b border-primary-text/10">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-6 sm:flex-row sm:items-center sm:gap-8">
+          <a href="/" className="text-xl font-semibold tracking-[0.2rem] text-primary-text">
+            EMAZ
+          </a>
+          <SearchBar className="w-full justify-start" initialQuery={query} size="compact" />
+        </div>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-8">
+        <div className="space-y-2 text-left">
+          <p className="text-xs uppercase tracking-[0.3rem] text-primary-text/60">Halal search results</p>
+          <h1 className="text-2xl font-semibold text-primary-text">
+            {query ? `Results for “${query}”` : 'Latest swarm discoveries'}
+          </h1>
+          <p className="text-sm text-primary-text/60">About {TOTAL_RESULTS} results</p>
         </div>
 
-        <section className="flex flex-col gap-8">
+        <section className="flex flex-col gap-4">
           {pagedResults.map((result) => (
             <ResultCard
               key={result.id}
