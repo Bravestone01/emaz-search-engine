@@ -1,10 +1,9 @@
-export default async function ResultsPage({
+export default function ResultsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: { q?: string }
 }) {
-  const resolvedSearchParams = await searchParams
-  const query = (resolvedSearchParams.q ?? '').trim()
+  const query = (searchParams.q ?? '').trim()
 
   return (
     <main className="min-h-screen bg-primary-bg px-27 py-54 text-primary-text">
