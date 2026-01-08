@@ -2,25 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-}
-
 body {
-  @apply bg-black text-white;
-  min-height: 100vh;
+  @apply bg-emaz-blue text-white;
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
-}
-
-main {
-  @apply min-h-screen;
-}
-
-.lux-border {
-  @apply border border-white/10;
-}
-
-.lux-card {
-  @apply rounded-2xl bg-white/5 backdrop-blur-md;
 }
