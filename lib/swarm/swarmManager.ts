@@ -1,4 +1,4 @@
-import { githubMockResults, type SwarmResult } from './mockData'
+import { type SwarmResult } from './mockData'
 
 const WIKIPEDIA_URL =
   'https://en.wikipedia.org/w/api.php?action=opensearch&search=%QUERY%&limit=9&namespace=0&format=json&origin=*'
@@ -190,11 +190,55 @@ async function fetchNewsResults(query: string): Promise<SwarmResult[]> {
   }
 }
 
-async function fetchGithubMock(query: string): Promise<SwarmResult[]> {
-  return githubMockResults.map((result) => ({
-    ...result,
-    description: `${result.description} (Query: ${query})`,
-  }))
+async function fetchGitHubResults(query: string): Promise<SwarmResult[]> {
+  const token = process.env.GITHUB_TOKEN
+
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github.v3+json',
+  }
+
+  if (token) {
+    headers.Authorization = `token ${token}`
+  }
+
+  try {
+    const response = await withTimeout(
+      fetch(
+        `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&per_page=9`,
+        {
+          timeout: TIMEOUT_MS,
+          headers,
+        } as RequestInit,
+      ),
+      TIMEOUT_MS,
+    )
+
+    if (!response.ok) {
+      return []
+    }
+
+    const data = (await response.json()) as {
+      items?: Array<{
+        full_name?: string
+        description?: string | null
+        html_url?: string
+        stargazers_count?: number
+      }>
+    }
+
+    return (
+      data.items?.map((repo) => ({
+        title: repo.full_name ?? '',
+        description: repo.description ?? '',
+        url: repo.html_url ?? '',
+        source: 'GitHub',
+        stars: repo.stargazers_count ?? 0,
+      })) ?? []
+    ).filter((result) => result.title && result.url)
+  } catch (error) {
+    console.warn('GitHub fetch failed:', error)
+    return []
+  }
 }
 
 export async function fetchFromAllAPIs(query: string): Promise<SwarmResult[]> {
@@ -203,7 +247,7 @@ export async function fetchFromAllAPIs(query: string): Promise<SwarmResult[]> {
     fetchGoogleResults(query),
     fetchDuckDuckGo(query),
     fetchNewsResults(query),
-    fetchGithubMock(query),
+    fetchGitHubResults(query),
   ])
 
   return responses.flat().slice(0, 45)

@@ -4,6 +4,7 @@ export type SwarmResult = {
   url: string
   source: string
   image?: string
+  stars?: number
 }
 
 export const wikipediaMockResults: SwarmResult[] = [
@@ -117,62 +118,5 @@ export const duckDuckGoMockResults: SwarmResult[] = [
     description: 'Fintech approaches aligned with Islamic finance.',
     url: 'https://duckduckgo.com/?q=islamic+fintech',
     source: 'DuckDuckGo',
-  },
-]
-
-export const githubMockResults: SwarmResult[] = [
-  {
-    title: 'halal-search-engine',
-    description: 'Open-source halal search engine prototype.',
-    url: 'https://github.com/example/halal-search-engine',
-    source: 'GitHub',
-  },
-  {
-    title: 'islamic-finance-api',
-    description: 'API toolkit for Islamic finance calculations.',
-    url: 'https://github.com/example/islamic-finance-api',
-    source: 'GitHub',
-  },
-  {
-    title: 'zakat-calculator',
-    description: 'Zakat calculator with configurable thresholds.',
-    url: 'https://github.com/example/zakat-calculator',
-    source: 'GitHub',
-  },
-  {
-    title: 'sukuk-portfolio',
-    description: 'Portfolio tools for sukuk investments.',
-    url: 'https://github.com/example/sukuk-portfolio',
-    source: 'GitHub',
-  },
-  {
-    title: 'halal-logistics-dashboard',
-    description: 'Dashboard for halal supply chain monitoring.',
-    url: 'https://github.com/example/halal-logistics-dashboard',
-    source: 'GitHub',
-  },
-  {
-    title: 'waqf-tracker',
-    description: 'Track waqf endowments and community projects.',
-    url: 'https://github.com/example/waqf-tracker',
-    source: 'GitHub',
-  },
-  {
-    title: 'ethical-investing-cli',
-    description: 'CLI tools for ethical and halal investing research.',
-    url: 'https://github.com/example/ethical-investing-cli',
-    source: 'GitHub',
-  },
-  {
-    title: 'halal-commerce-starter',
-    description: 'Starter template for halal commerce storefronts.',
-    url: 'https://github.com/example/halal-commerce-starter',
-    source: 'GitHub',
-  },
-  {
-    title: 'faithful-ui',
-    description: 'UI components inspired by faith-first design.',
-    url: 'https://github.com/example/faithful-ui',
-    source: 'GitHub',
   },
 ]
