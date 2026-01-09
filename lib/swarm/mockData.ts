@@ -62,63 +62,6 @@ export const wikipediaMockResults: SwarmResult[] = [
   },
 ]
 
-export const googleMockResults: SwarmResult[] = [
-  {
-    title: 'Halal Startup Directory',
-    description: 'Discover halal-focused startups building ethical products.',
-    url: 'https://search.example.com/halal-startups',
-    source: 'Google',
-  },
-  {
-    title: '369 Design System Guide',
-    description: 'A structured rhythm for spacing and typography decisions.',
-    url: 'https://search.example.com/369-design',
-    source: 'Google',
-  },
-  {
-    title: 'Faith-Based Growth Playbook',
-    description: 'Strategies for purposeful growth in halal ecosystems.',
-    url: 'https://search.example.com/faith-growth',
-    source: 'Google',
-  },
-  {
-    title: 'Ethical Commerce Insights',
-    description: 'Market insights for halal commerce and customer trust.',
-    url: 'https://search.example.com/ethical-commerce',
-    source: 'Google',
-  },
-  {
-    title: 'Halal Supply Chains',
-    description: 'Building transparent, traceable supply chain operations.',
-    url: 'https://search.example.com/halal-supply',
-    source: 'Google',
-  },
-  {
-    title: 'Community Funding Models',
-    description: 'Crowdfunding approaches aligned with Islamic finance.',
-    url: 'https://search.example.com/community-funding',
-    source: 'Google',
-  },
-  {
-    title: 'Halal Marketing Benchmarks',
-    description: 'Benchmarks and KPIs for ethical marketing teams.',
-    url: 'https://search.example.com/halal-marketing',
-    source: 'Google',
-  },
-  {
-    title: 'Sharia Compliance Checklist',
-    description: 'Operational checklist for maintaining compliance.',
-    url: 'https://search.example.com/sharia-checklist',
-    source: 'Google',
-  },
-  {
-    title: 'Halal Product Launches',
-    description: 'Product launch playbooks for values-led brands.',
-    url: 'https://search.example.com/halal-launch',
-    source: 'Google',
-  },
-]
-
 export const duckDuckGoMockResults: SwarmResult[] = [
   {
     title: 'Instant Answer: Halal Finance',
