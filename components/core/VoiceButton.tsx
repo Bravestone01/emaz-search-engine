@@ -4,17 +4,46 @@ import { useState } from "react"
 
 export default function VoiceButton() {
   const [isListening, setIsListening] = useState(false)
+  const [transcript, setTranscript] = useState("")
 
-  const handleClick = () => {
-    setIsListening((current) => !current)
+  const startListening = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+
+    if (!SpeechRecognition) {
+      alert("Voice search not supported in your browser")
+      return
+    }
+
+    const recognition = new SpeechRecognition()
+    recognition.lang = "en-US,ur-PK"
+    recognition.continuous = false
+    recognition.interimResults = false
+
+    recognition.start()
+    setIsListening(true)
+
+    recognition.onresult = (event: any) => {
+      const nextTranscript = event.results[0][0].transcript
+      setTranscript(nextTranscript)
+      window.location.href = `/results?q=${encodeURIComponent(nextTranscript)}`
+    }
+
+    recognition.onerror = () => {
+      setIsListening(false)
+    }
+
+    recognition.onend = () => {
+      setIsListening(false)
+    }
   }
 
   return (
     <div className="flex flex-col items-center">
       <button
         type="button"
-        onClick={handleClick}
-        className="flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#FFD700] text-[#0A1929] transition hover:brightness-110"
+        onClick={startListening}
+        className={`voice-button flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#FFD700] text-[#0A1929] transition hover:brightness-110 ${isListening ? "listening" : ""}`}
         aria-label="Voice search"
       >
         <svg
