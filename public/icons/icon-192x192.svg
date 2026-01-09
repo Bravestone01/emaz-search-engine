@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="32" fill="#000B1E" />
+  <circle cx="96" cy="96" r="56" fill="#0A1929" stroke="#D4AF37" stroke-width="6" />
+  <text x="96" y="108" text-anchor="middle" font-size="40" font-family="system-ui, sans-serif" fill="#D4AF37">EM</text>
+</svg>
