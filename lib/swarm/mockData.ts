@@ -3,6 +3,7 @@ export type SwarmResult = {
   description: string
   url: string
   source: string
+  image?: string
 }
 
 export const wikipediaMockResults: SwarmResult[] = [
@@ -116,63 +117,6 @@ export const duckDuckGoMockResults: SwarmResult[] = [
     description: 'Fintech approaches aligned with Islamic finance.',
     url: 'https://duckduckgo.com/?q=islamic+fintech',
     source: 'DuckDuckGo',
-  },
-]
-
-export const newsApiMockResults: SwarmResult[] = [
-  {
-    title: 'Halal Economy Grows Across Global Markets',
-    description: 'Analysts highlight steady demand for halal services.',
-    url: 'https://news.example.com/halal-economy-growth',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Ethical Investing Hits New Milestone',
-    description: 'Funds aligned with faith-based values attract investors.',
-    url: 'https://news.example.com/ethical-investing-milestone',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Halal Logistics Network Expansion',
-    description: 'New hubs promise faster delivery for halal products.',
-    url: 'https://news.example.com/halal-logistics',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Community Finance Programs Launch',
-    description: 'Local initiatives aim to support halal entrepreneurs.',
-    url: 'https://news.example.com/community-finance',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Sukuk Market Sees Renewed Interest',
-    description: 'Investors focus on stability and shared risk models.',
-    url: 'https://news.example.com/sukuk-market',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Halal Retail Innovation',
-    description: 'Retailers blend technology with halal assurance.',
-    url: 'https://news.example.com/halal-retail',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Faith-Based Fintech Partnerships',
-    description: 'New collaborations aim to serve ethical finance.',
-    url: 'https://news.example.com/faith-fintech',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Zakat Platforms Scale Up',
-    description: 'Digital platforms streamline charitable giving.',
-    url: 'https://news.example.com/zakat-platforms',
-    source: 'NewsAPI',
-  },
-  {
-    title: 'Halal Tourism Demand Rises',
-    description: 'Travel providers expand halal-friendly offerings.',
-    url: 'https://news.example.com/halal-tourism',
-    source: 'NewsAPI',
   },
 ]
 
