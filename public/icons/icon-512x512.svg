@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#000B1E" />
+  <circle cx="256" cy="256" r="160" fill="#0A1929" stroke="#D4AF37" stroke-width="12" />
+  <text x="256" y="292" text-anchor="middle" font-size="120" font-family="system-ui, sans-serif" fill="#D4AF37">EMAZ</text>
+</svg>
