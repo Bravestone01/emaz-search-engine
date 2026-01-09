@@ -1,11 +1,4 @@
-import {
-  duckDuckGoMockResults,
-  githubMockResults,
-  googleMockResults,
-  newsApiMockResults,
-  wikipediaMockResults,
-  type SwarmResult,
-} from './mockData'
+import { githubMockResults, newsApiMockResults, type SwarmResult } from './mockData'
 
 const WIKIPEDIA_URL =
   'https://en.wikipedia.org/w/api.php?action=opensearch&search=%QUERY%&limit=9&namespace=0&format=json&origin=*'
@@ -107,11 +100,44 @@ async function fetchDuckDuckGo(query: string): Promise<SwarmResult[]> {
   }
 }
 
-async function fetchGoogleMock(query: string): Promise<SwarmResult[]> {
-  return googleMockResults.map((result) => ({
-    ...result,
-    description: `${result.description} (Query: ${query})`,
-  }))
+async function fetchGoogleResults(query: string): Promise<SwarmResult[]> {
+  const apiKey = process.env.GOOGLE_API_KEY
+  const cseId = process.env.GOOGLE_CSE_ID
+
+  if (!apiKey || !cseId) {
+    console.warn('Google API key or CSE ID missing')
+    return []
+  }
+
+  try {
+    const response = await withTimeout(
+      fetch(
+        `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cseId}&q=${encodeURIComponent(query)}`,
+        { timeout: TIMEOUT_MS } as RequestInit,
+      ),
+      TIMEOUT_MS,
+    )
+
+    if (!response.ok) {
+      return []
+    }
+
+    const data = (await response.json()) as {
+      items?: Array<{ title?: string; snippet?: string; link?: string }>
+    }
+
+    return (
+      data.items?.map((item) => ({
+        title: item.title ?? '',
+        description: item.snippet ?? '',
+        url: item.link ?? '',
+        source: 'Google',
+      })) ?? []
+    ).filter((result) => result.title && result.url)
+  } catch (error) {
+    console.error('Google fetch failed:', error)
+    return []
+  }
 }
 
 async function fetchNewsMock(query: string): Promise<SwarmResult[]> {
@@ -131,7 +157,7 @@ async function fetchGithubMock(query: string): Promise<SwarmResult[]> {
 export async function fetchFromAllAPIs(query: string): Promise<SwarmResult[]> {
   const responses = await Promise.all([
     fetchWikipedia(query),
-    fetchGoogleMock(query),
+    fetchGoogleResults(query),
     fetchDuckDuckGo(query),
     fetchNewsMock(query),
     fetchGithubMock(query),
