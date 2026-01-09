@@ -1,4 +1,4 @@
-import { githubMockResults, newsApiMockResults, type SwarmResult } from './mockData'
+import { githubMockResults, type SwarmResult } from './mockData'
 
 const WIKIPEDIA_URL =
   'https://en.wikipedia.org/w/api.php?action=opensearch&search=%QUERY%&limit=9&namespace=0&format=json&origin=*'
@@ -140,11 +140,54 @@ async function fetchGoogleResults(query: string): Promise<SwarmResult[]> {
   }
 }
 
-async function fetchNewsMock(query: string): Promise<SwarmResult[]> {
-  return newsApiMockResults.map((result) => ({
-    ...result,
-    description: `${result.description} (Query: ${query})`,
-  }))
+async function fetchNewsResults(query: string): Promise<SwarmResult[]> {
+  const apiKey = process.env.NEWSAPI_KEY
+
+  if (!apiKey) {
+    return []
+  }
+
+  try {
+    const response = await withTimeout(
+      fetch(
+        `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${apiKey}&pageSize=9`,
+        { timeout: TIMEOUT_MS } as RequestInit,
+      ),
+      TIMEOUT_MS,
+    )
+
+    if (response.status === 429) {
+      console.warn('NewsAPI rate limit hit')
+      return []
+    }
+
+    if (!response.ok) {
+      return []
+    }
+
+    const data = (await response.json()) as {
+      articles?: Array<{
+        title?: string
+        description?: string | null
+        content?: string | null
+        url?: string
+        urlToImage?: string | null
+      }>
+    }
+
+    return (
+      data.articles?.map((article) => ({
+        title: article.title ?? '',
+        description: article.description ?? article.content?.substring(0, 200) ?? '',
+        url: article.url ?? '',
+        source: 'NewsAPI',
+        image: article.urlToImage ?? undefined,
+      })) ?? []
+    ).filter((result) => result.title && result.url)
+  } catch (error) {
+    console.warn('NewsAPI fetch failed:', error)
+    return []
+  }
 }
 
 async function fetchGithubMock(query: string): Promise<SwarmResult[]> {
@@ -159,7 +202,7 @@ export async function fetchFromAllAPIs(query: string): Promise<SwarmResult[]> {
     fetchWikipedia(query),
     fetchGoogleResults(query),
     fetchDuckDuckGo(query),
-    fetchNewsMock(query),
+    fetchNewsResults(query),
     fetchGithubMock(query),
   ])
 
