@@ -1,11 +1,7 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-type ThemeProviderProps = {
-  children: ReactNode
-}
-
-export function ThemeProvider({ children }: ThemeProviderProps) {
-  return <>{children}</>
+export default function ThemeProvider({ children }: { children: ReactNode }) {
+  return <div className="theme-369">{children}</div>
 }
