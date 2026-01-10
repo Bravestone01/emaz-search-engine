@@ -1,31 +1,54 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+
+type SpeechRecognitionConstructor = new () => SpeechRecognition
 
 export default function VoiceButton() {
   const [isListening, setIsListening] = useState(false)
-  const [transcript, setTranscript] = useState("")
+  const [isSupported, setIsSupported] = useState(true)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.abort()
+      recognitionRef.current = null
+    }
+  }, [])
 
   const startListening = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (isListening) {
+      recognitionRef.current?.abort()
+      setIsListening(false)
+      return
+    }
+
+    const SpeechRecognition = (window as typeof window & {
+      webkitSpeechRecognition?: SpeechRecognitionConstructor
+      SpeechRecognition?: SpeechRecognitionConstructor
+    }).SpeechRecognition ??
+      (window as typeof window & { webkitSpeechRecognition?: SpeechRecognitionConstructor })
+        .webkitSpeechRecognition
 
     if (!SpeechRecognition) {
+      setIsSupported(false)
       alert("Voice search not supported in your browser")
       return
     }
 
     const recognition = new SpeechRecognition()
-    recognition.lang = "en-US,ur-PK"
+    const browserLanguage = navigator.language.toLowerCase()
+    recognition.lang = browserLanguage.startsWith("ur") ? "ur-PK" : "en-US"
     recognition.continuous = false
     recognition.interimResults = false
 
+    recognitionRef.current = recognition
     recognition.start()
     setIsListening(true)
 
     recognition.onresult = (event: any) => {
       const nextTranscript = event.results[0][0].transcript
-      setTranscript(nextTranscript)
+      setIsListening(false)
       window.location.href = `/results?q=${encodeURIComponent(nextTranscript)}`
     }
 
@@ -45,6 +68,8 @@ export default function VoiceButton() {
         onClick={startListening}
         className={`voice-button flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#FFD700] text-[#0A1929] transition hover:brightness-110 ${isListening ? "listening" : ""}`}
         aria-label="Voice search"
+        aria-pressed={isListening}
+        disabled={!isSupported}
       >
         <svg
           aria-hidden="true"
@@ -59,6 +84,11 @@ export default function VoiceButton() {
       {isListening ? (
         <span className="mt-1 text-xs font-medium text-[#FFD700]">
           Listening...
+        </span>
+      ) : null}
+      {!isSupported ? (
+        <span className="mt-1 text-xs font-medium text-red-400">
+          Voice search unavailable
         </span>
       ) : null}
     </div>
