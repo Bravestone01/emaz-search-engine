@@ -1,4 +1,11 @@
-import { type SwarmResult } from './mockData'
+export type SwarmResult = {
+  title: string
+  description: string
+  url: string
+  source: string
+  image?: string
+  stars?: number
+}
 
 const WIKIPEDIA_URL =
   'https://en.wikipedia.org/w/api.php?action=opensearch&search=%QUERY%&limit=9&namespace=0&format=json&origin=*'
@@ -252,5 +259,3 @@ export async function fetchFromAllAPIs(query: string): Promise<SwarmResult[]> {
 
   return responses.flat().slice(0, 45)
 }
-
-export { type SwarmResult }
