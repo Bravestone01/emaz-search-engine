@@ -32,7 +32,6 @@ async function buildAbsoluteUrl(path: string) {
   return `${protocol}://${host}${path}`
 }
 
-
 export default async function ResultsPage({
   searchParams,
 }: {
@@ -106,7 +105,7 @@ export default async function ResultsPage({
           </h1>
           <p className="text-[14px] font-medium text-primary-text/60">
             {hasError ? (
-              <span className="text-red-400">⚠ Could not fetch results. Showing cached data.</span>
+              <span className="text-red-400">⚠ Could not fetch results. Showing empty results.</span>
             ) : (
               `About ${results.length} results found`
             )}

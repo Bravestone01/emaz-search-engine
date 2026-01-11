@@ -21,6 +21,14 @@ export default function ResultCard({ title, description, source, url }: ResultCa
     }
   }, [url])
 
+  const hostname = useMemo(() => {
+    try {
+      return new URL(affiliateUrl).hostname
+    } catch {
+      return affiliateUrl
+    }
+  }, [affiliateUrl])
+
   const handleClick = () => {
     if (isAffiliate) {
       trackAffiliateClick(affiliateUrl)
@@ -36,7 +44,7 @@ export default function ResultCard({ title, description, source, url }: ResultCa
       onClick={handleClick}
     >
       <div className="flex flex-wrap items-center gap-[9px] text-xs text-primary-text/60">
-        <span className="truncate text-[9px] font-medium">{new URL(affiliateUrl).hostname}</span>
+        <span className="truncate text-[9px] font-medium">{hostname}</span>
         <span className="rounded-full border border-[#D4AF37]/60 px-[9px] py-[3px] text-[9px] font-semibold uppercase tracking-[0.18rem] text-primary-text/80 transition-all duration-300 group-hover:border-[#D4AF37] group-hover:text-[#D4AF37]">
           {source}
         </span>
