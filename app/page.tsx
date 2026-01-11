@@ -65,7 +65,7 @@ export default function Home() {
       </div>
 
       {/* CSS for animation delays */}
-      <style jsx>{`
+      <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 0.05; transform: scale(1); }
           50% { opacity: 0.1; transform: scale(1.05); }
