@@ -32,18 +32,6 @@ async function buildAbsoluteUrl(path: string) {
   return `${protocol}://${host}${path}`
 }
 
-function buildFallbackResults(startId: number, count: number): ResultItem[] {
-  return Array.from({ length: count }, (_, index) => {
-    const id = startId + index
-    return {
-      id,
-      title: `Result ${id}`,
-      description: 'Description...',
-      source: 'Wikipedia',
-      url: '#',
-    }
-  })
-}
 
 export default async function ResultsPage({
   searchParams,
@@ -57,22 +45,29 @@ export default async function ResultsPage({
     ? 1
     : Math.min(Math.max(requestedPage, 1), TOTAL_PAGES)
 
-  const response = await fetch(
-    await buildAbsoluteUrl(`/api/swarm?q=${encodeURIComponent(query)}`),
-    {
-      cache: 'no-store',
-    },
-  )
+  let response
+  let hasError = false
 
-  const data = (await response.json()) as SwarmApiResponse
+  try {
+    response = await fetch(
+      await buildAbsoluteUrl(`/api/swarm?q=${encodeURIComponent(query)}`),
+      {
+        cache: 'no-store',
+      },
+    )
+
+    if (!response.ok) {
+      hasError = true
+    }
+  } catch (error) {
+    hasError = true
+  }
+
+  const data = hasError ? { query, results: [] } : ((await response!.json()) as SwarmApiResponse)
   const apiResults = data.results ?? []
   const trimmedResults = apiResults.slice(0, TOTAL_RESULTS)
-  const filledResults =
-    trimmedResults.length < TOTAL_RESULTS
-      ? trimmedResults.concat(buildFallbackResults(trimmedResults.length + 1, TOTAL_RESULTS - trimmedResults.length))
-      : trimmedResults
 
-  const results: ResultItem[] = filledResults.map((result, index) => ({
+  const results: ResultItem[] = trimmedResults.map((result, index) => ({
     ...result,
     id: index + 1,
   }))
@@ -82,37 +77,76 @@ export default async function ResultsPage({
 
   return (
     <main className="min-h-screen bg-primary-bg text-primary-text">
-      <div className="border-b border-primary-text/10">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-6 sm:flex-row sm:items-center sm:gap-8">
-          <a href="/" className="text-xl font-semibold tracking-[0.2rem] text-primary-text">
+      <div className="border-b border-primary-text/10 shadow-lg backdrop-blur-sm">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-[27px] px-[27px] py-[27px] sm:flex-row sm:items-center sm:gap-[36px]">
+          <a
+            href="/"
+            className="text-[27px] font-bold tracking-[0.27rem] text-primary-text transition-all duration-300 hover:text-[#FFD700] hover:scale-105"
+          >
             EMAZ
           </a>
           <SearchBar className="w-full justify-start" initialQuery={query} size="compact" />
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-6 py-8">
-        <div className="space-y-2 text-left">
-          <p className="text-xs uppercase tracking-[0.3rem] text-primary-text/60">Halal search results</p>
-          <h1 className="text-2xl font-semibold text-primary-text">
-            {query ? `Results for “${query}”` : 'Latest swarm discoveries'}
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-[27px] px-[27px] py-[36px]">
+        <div className="space-y-[9px] text-left">
+          <p className="text-[9px] font-bold uppercase tracking-[0.36rem] text-primary-text/60">
+            Halal Search Results
+          </p>
+          <h1 className="text-[27px] font-bold leading-[36px] text-primary-text">
+            {query ? (
+              <>
+                Results for{' '}
+                <span className="text-[#FFD700]">"{query}"</span>
+              </>
+            ) : (
+              'Latest Swarm Discoveries'
+            )}
           </h1>
-          <p className="text-sm text-primary-text/60">About {TOTAL_RESULTS} results</p>
+          <p className="text-[14px] font-medium text-primary-text/60">
+            {hasError ? (
+              <span className="text-red-400">⚠ Could not fetch results. Showing cached data.</span>
+            ) : (
+              `About ${results.length} results found`
+            )}
+          </p>
         </div>
 
-        <section className="flex flex-col gap-4">
-          {pagedResults.map((result) => (
-            <ResultCard
-              key={result.id}
-              title={result.title}
-              description={result.description}
-              source={result.source}
-              url={result.url}
-            />
-          ))}
-        </section>
+        {pagedResults.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-[27px] rounded-[9px] border-2 border-[#D4AF37]/30 bg-gradient-to-br from-[#0A1929] to-[#0D1F33] px-[36px] py-[72px] shadow-xl">
+            <div className="text-[54px]">🔍</div>
+            <h2 className="text-[27px] font-bold text-[#FFD700]">No Results Found</h2>
+            <p className="text-center text-[14px] text-primary-text/60">
+              {hasError
+                ? 'We encountered an error while searching. Please try again.'
+                : `No results found for "${query}". Try different keywords.`}
+            </p>
+            <a
+              href="/"
+              className="rounded-full border-2 border-[#D4AF37] bg-[#D4AF37]/10 px-[27px] py-[9px] font-semibold text-[#FFD700] transition-all duration-300 hover:scale-105 hover:bg-[#D4AF37]/20 hover:shadow-[0_0_27px_rgba(212,175,55,0.4)]"
+            >
+              ← Back to Home
+            </a>
+          </div>
+        ) : (
+          <>
+            <section className="flex flex-col gap-[18px]">
+              {pagedResults.map((result) => (
+                <ResultCard
+                  key={result.id}
+                  title={result.title}
+                  description={result.description}
+                  source={result.source}
+                  url={result.url}
+                />
+              ))}
+            </section>
 
-        <Pagination currentPage={currentPage} query={query} />
+            <Pagination currentPage={currentPage} query={query} />
+          </>
+        )}
+
         <Disclosure />
       </div>
     </main>
