@@ -64,17 +64,6 @@ export default function Home() {
         Powered by 5 Search Sources
       </div>
 
-      {/* CSS for animation delays */}
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.05; transform: scale(1); }
-          50% { opacity: 0.1; transform: scale(1.05); }
-        }
-        .animation-delay-300 { animation-delay: 300ms; }
-        .animation-delay-600 { animation-delay: 600ms; }
-        .animation-delay-1000 { animation-delay: 1000ms; }
-        .animation-delay-2000 { animation-delay: 2000ms; }
-      `}</style>
     </main>
   )
 }
