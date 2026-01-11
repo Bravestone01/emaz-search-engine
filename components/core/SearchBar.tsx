@@ -1,7 +1,7 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { useState, type FormEvent } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState, type FormEvent } from "react"
 
 import VoiceButton from "./VoiceButton"
 
@@ -13,10 +13,20 @@ type SearchBarProps = {
 
 export default function SearchBar({ initialQuery = "", size = "default", className }: SearchBarProps) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [query, setQuery] = useState(initialQuery)
   const [isLoading, setIsLoading] = useState(false)
   const isCompact = size === "compact"
   const wrapperClassName = isCompact ? "relative w-full max-w-2xl flex-1" : "relative w-full max-w-[90%] flex-1"
+
+  useEffect(() => {
+    setQuery(initialQuery)
+  }, [initialQuery])
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [pathname, searchParams])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
